@@ -1,28 +1,37 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+	<div id="app">
+		<Trivia />
+		<MyChart pollresults="[2,5,6,0]" />
+	</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import MyChart from "./components/MyChart.vue";
+import Trivia from "./components/Trivia";
 
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
-}
+	name: "app",
+	components: {
+		MyChart,
+		Trivia
+	}
+};
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+** {
+	box-sizing: border-box;
+}
+[v-cloak] {
+	display: none;
+}
+
+body {
+	background-image: url("./assets/img/millionaire01.jpg");
+	background-size: cover;
+	background-color: #000;
+	font-family: Arial, sans-serif;
+	color: #fff;
+	margin: 0;
 }
 </style>
