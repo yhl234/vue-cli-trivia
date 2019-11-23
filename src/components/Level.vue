@@ -1,13 +1,26 @@
 <template>
-  <section>
-    <ul>
-      <li
-        v-for="(m, index) in money"
-        :key="index"
-        :class="{ active: m.level == qIndex + 1 }"
-      >{{ m.level }} - {{ m.amount }}</li>
-    </ul>
-  </section>
+  <aside v-cloak>
+    <section>
+      <button id="fifty_fifty">
+        <i class="ms-Icon ms-Icon--Contrast" aria-hidden="true"></i>
+      </button>
+      <button id="ask_audience">
+        <i class="ms-Icon ms-Icon--Group" aria-hidden="true"></i>
+      </button>
+      <button id="phone_friend">
+        <i class="ms-Icon ms-Icon--Phone" aria-hidden="true"></i>
+      </button>
+    </section>
+    <section>
+      <ul>
+        <li
+          v-for="(m, index) in money"
+          :key="index"
+          :class="{ active: m.level == qIndex + 1 }"
+        >{{ m.level }} - {{ m.amount }}</li>
+      </ul>
+    </section>
+  </aside>
 </template>
 
 <script>
@@ -46,4 +59,54 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.active {
+  border-top: 1px solid skyblue;
+  border-bottom: 1px solid skyblue;
+}
+ul {
+  list-style-type: none;
+  color: #cad622;
+  font-size: 20px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin-top: 10px;
+  cursor: pointer;
+}
+li:nth-child(1),
+li:nth-child(6),
+li:nth-child(11) {
+  color: #fff;
+}
+li span {
+  margin-left: 30px;
+}
+aside i {
+  font-size: 80px;
+}
+aside section {
+  display: flex;
+  justify-items: center;
+  text-align: center;
+}
+
+aside button {
+  cursor: pointer;
+  border-radius: 10px 20px;
+  margin: 10px;
+  color: #fff;
+
+  /* taken from https://uigradients.com/#Lawrencium */
+  background: #000428; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to bottom,
+    #004e92,
+    #000428
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to bottom, #004e92, #000428);
+}
+</style>

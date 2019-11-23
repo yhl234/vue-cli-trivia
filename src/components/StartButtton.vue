@@ -17,4 +17,10 @@ export default {
 </script>
 
 <style>
+#start {
+  display: grid;
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
+}
 </style>

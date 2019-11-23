@@ -1,7 +1,7 @@
-<template>
-  <div>
-    <main v-cloak id="isStart">
-      <div v-cloak class="header">
+<template >
+  <main v-cloak>
+    <div id="game">
+      <div class="header">
         <!-- Place to place messages or voting results etc -->
       </div>
       <div v-cloak class="question">
@@ -9,7 +9,6 @@
       </div>
 
       <button
-        v-cloak
         v-for="(a, index) in currentQuestion.answers"
         :key="index"
         :id="'btnAnswer' + index"
@@ -32,9 +31,9 @@
           <span v-html="a"></span>
         </div>
       </button>
-    </main>
+    </div>
     <Level :qIndex="qIndex" />
-  </div>
+  </main>
 </template>
 
 <script>
@@ -46,7 +45,7 @@ export default {
   components: {
     Level
   },
-  // props: [""],
+  props: ["isStart"],
   data: function() {
     return {
       // An array of question object
@@ -101,12 +100,77 @@ export default {
       if (index === selected) {
         this.qIndex++;
       } else {
-        this.isStart = false;
+        this.emitStart();
       }
+    },
+    emitStart() {
+      this.$emit("update:isStart", false);
     }
   }
 };
 </script>
 
-<style>
+<style >
+main {
+  display: flex;
+}
+#game {
+  display: grid;
+  grid-template-columns: 50%, 50%;
+  grid-template-rows: 60%, 20%, 10%, 10%;
+  grid-template-areas: "header header" "question question" "a b" "c d";
+  grid-column-gap: 10px;
+  grid-row-gap: 15px;
+}
+.header {
+  grid-area: header;
+}
+.question {
+  grid-area: question;
+  /* justify-self: center; */
+  border: 1px solid white;
+  padding: 50px 10%;
+  /* taken from https://uigradients.com/#Lawrencium */
+  background: #0f0c29;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+}
+
+#game button,
+#start button {
+  cursor: pointer;
+  display: block;
+  justify-self: center;
+  font-size: 24px;
+  width: 95%;
+  padding: 40px 0;
+  color: #fff;
+  /* taken from https://uigradients.com/#Lawrencium */
+  background: #0f0c29;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to bottom, #24243e, #302b63, #0f0c29);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to bottom, #24243e, #302b63, #0f0c29);
+}
+#game button div {
+  display: block;
+}
+#game button span:first-child {
+  color: #5b6102;
+}
+
+#btnAnswer0 {
+  grid-area: a;
+}
+#btnAnswer1 {
+  grid-area: b;
+}
+#btnAnswer2 {
+  grid-area: c;
+}
+#btnAnswer3 {
+  grid-area: d;
+}
 </style>
