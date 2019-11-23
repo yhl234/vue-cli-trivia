@@ -8,8 +8,9 @@
     @keyup.68="isAnswer(3)"
     tabindex="0"
   >
-    <Question :isStart="isStart" :currentQuestion="currentQuestion" :qIndex="qIndex" />
-    <Level />
+    <Question v-if="isStart" />
+    <StartButton v-else :isStart.sync="isStart" />
+
     <aside v-cloak v-if="isStart">
       <section>
         <button id="fifty_fifty">
@@ -27,86 +28,33 @@
 </template>
 
 <script>
-import _ from "lodash";
-import Level from "./Level";
 import Question from "./Question";
+import StartButton from "./StartButtton";
 
 export default {
   name: "Triva",
   components: {
-    Level,
-    Question
+    Question,
+    StartButton
   },
   data: function() {
     return {
-      isStart: false,
-      // An array of question object
-      questions: [],
-      // Watch()
-      qIndex: 0,
-      // Object from questions[qIndex]
-      currentQuestion: "",
-      // The answer of current question
-      currentAnswer: ""
+      isStart: false
     };
   },
-  async created() {
-    const res = await fetch(
-      "https://opentdb.com/api.php?amount=15&type=multiple"
-    );
-    const json = await res.json();
-    this.questions = json.results;
-    // Combine answers to an array
-    this.questions.forEach(question => {
-      const incorrectAnswers = question.incorrect_answers;
-      const correctAnswer = question.correct_answer;
-      // Copy from it instead of reference it
-      const answers = [...incorrectAnswers];
-      answers.push(correctAnswer);
-      question.answers = _.shuffle(answers);
-    });
-  },
-  watch: {
-    qIndex() {
-      this.displayQuestion();
-    }
-  },
+
   methods: {
     playSound(sound) {
       const path = `@/assets/sounds/${sound}.ogg`;
       const audio = new Audio(path);
       audio.play();
     },
-    read() {
-      const speech = new SpeechSynthesisUtterance();
-      speechSynthesis.cancel();
-      speech.lang = "en-US";
-      speech.text = this.currentQuestion.question;
-      speechSynthesis.speak(speech);
-    },
+
     start() {
       this.isStart = true;
       const sound = `Round1`;
       this.playSound(sound);
       this.displayQuestion();
-    },
-    active(level) {
-      if (level === this.qIndex + 1) {
-        return "active";
-      }
-    },
-    displayQuestion() {
-      this.currentQuestion = this.questions[this.qIndex];
-      this.read();
-    },
-    isAnswer(index) {
-      this.currentAnswer = this.currentQuestion.correct_answer;
-      const selected = this.currentQuestion.answers.indexOf(this.currentAnswer);
-      if (index === selected) {
-        this.qIndex++;
-      } else {
-        this.isStart = false;
-      }
     }
   }
 };
