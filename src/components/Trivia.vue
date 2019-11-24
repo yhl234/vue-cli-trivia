@@ -50,7 +50,7 @@ export default {
   flex-grow: 5;
 }
 aside {
-  /* flex-grow: 1; */
+  flex-grow: 1 0 0;
   display: flex;
   flex-direction: column;
   background-color: rgba(0, 0, 0, 0.5);
