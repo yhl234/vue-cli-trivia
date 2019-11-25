@@ -63,9 +63,6 @@ aside {
 .invisible {
   visibility: hidden !important;
 }
-.ghost {
-  display: none;
-}
 
 .settings {
   margin-top: 100px;
