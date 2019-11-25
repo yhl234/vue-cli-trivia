@@ -11,6 +11,11 @@ export default {
   name: "app",
   components: {
     Trivia
+  },
+  methods: {
+    passKeyUp(index) {
+      this.keyUp = index;
+    }
   }
 };
 </script>

@@ -11,6 +11,7 @@ export default {
   methods: {
     emitStart() {
       this.$emit("update:isStart", !this.isStart);
+      this.displayQuestion();
     }
   }
 };

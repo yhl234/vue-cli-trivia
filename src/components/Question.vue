@@ -36,7 +36,9 @@
 <script>
 import _ from "lodash";
 import Level from "./Level";
-
+const round1 = new Audio(require(`@/assets/sounds/Round1.ogg`));
+const round2 = new Audio(require(`@/assets/sounds/Round2.ogg`));
+const round3 = new Audio(require(`@/assets/sounds/Round3.ogg`));
 export default {
   name: "Question",
   components: {
@@ -53,7 +55,11 @@ export default {
       currentQuestion: "",
       // The answer of current question
       currentAnswer: "",
+      // whichRound()
+      round: "round1",
+      // vote()
       isVoting: false,
+      // for fifty to rerender the button
       componentKey: 0
     };
   },
@@ -74,15 +80,51 @@ export default {
       this.displayQuestion();
     });
   },
+  mounted() {
+    this.whichRound();
+    this.bgm();
+  },
   watch: {
     qIndex() {
       this.displayQuestion();
+      this.whichRound();
+    },
+    round() {
+      this.bgm();
     },
     keyUp() {
       this.isAnswer(this.keyUp);
     }
   },
   methods: {
+    // determine which bgm should be played
+    bgm() {
+      if (this.round === "round3") {
+        round3.play();
+      } else if (this.round === "round2") {
+        round2.play();
+      } else if (this.round === "round1") {
+        round1.play();
+      }
+    },
+    whichRound() {
+      // once qIndex reach certian point, gp tp next round and pause previous bgm
+      if (this.qIndex === 10) {
+        this.round = "round3";
+        round2.pause();
+      } else if (this.qIndex === 5) {
+        this.round = "round2";
+        round1.pause();
+      } else if (this.qIndex === 0) {
+        this.round = "round1";
+      }
+    },
+    playSound(sound) {
+      // sound should include
+      const path = require(`@/assets/sounds/${sound}`);
+      const audio = new Audio(path);
+      audio.play();
+    },
     read() {
       const speech = new SpeechSynthesisUtterance();
       speechSynthesis.cancel();
@@ -98,8 +140,10 @@ export default {
     isAnswer(index) {
       const selected = this.currentQuestion.answers.indexOf(this.currentAnswer);
       if (index === selected) {
+        this.playSound("RightAnswerShort.ogg");
         this.qIndex++;
       } else {
+        this.playSound("WrongAnswer.ogg");
         this.emitStart();
       }
     },

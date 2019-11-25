@@ -30,18 +30,6 @@ export default {
   },
 
   methods: {
-    playSound(sound) {
-      const path = `@/assets/sounds/${sound}.ogg`;
-      const audio = new Audio(path);
-      audio.play();
-    },
-
-    start() {
-      this.isStart = true;
-      const sound = `Round1`;
-      this.playSound(sound);
-      this.displayQuestion();
-    },
     passKeyUp(index) {
       this.keyUp = index;
     }
