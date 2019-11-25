@@ -42,7 +42,7 @@ export default {
   components: {
     Level
   },
-  props: ["isStart"],
+  props: ["isStart", "keyUp"],
   data: function() {
     return {
       // An array of question object
@@ -77,6 +77,9 @@ export default {
   watch: {
     qIndex() {
       this.displayQuestion();
+    },
+    keyUp() {
+      this.isAnswer(this.keyUp);
     }
   },
   methods: {

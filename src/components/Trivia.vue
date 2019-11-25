@@ -1,13 +1,13 @@
 <template>
   <div
     @keyup.enter="start()"
-    @keyup.65="isAnswer(0)"
-    @keyup.66="isAnswer(1)"
-    @keyup.67="isAnswer(2)"
-    @keyup.68="isAnswer(3)"
+    @keyup.65="passKeyUp(0)"
+    @keyup.66="passKeyUp(1)"
+    @keyup.67="passKeyUp(2)"
+    @keyup.68="passKeyUp(3)"
     tabindex="0"
   >
-    <Question v-if="isStart" :isStart.sync="isStart" />
+    <Question v-if="isStart" :isStart.sync="isStart" :keyUp="keyUp" />
     <StartButton v-else :isStart.sync="isStart" />
   </div>
 </template>
@@ -24,7 +24,8 @@ export default {
   },
   data: function() {
     return {
-      isStart: false
+      isStart: false,
+      keyUp: ""
     };
   },
 
@@ -40,6 +41,9 @@ export default {
       const sound = `Round1`;
       this.playSound(sound);
       this.displayQuestion();
+    },
+    passKeyUp(index) {
+      this.keyUp = index;
     }
   }
 };
