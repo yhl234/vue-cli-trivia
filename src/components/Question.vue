@@ -39,6 +39,7 @@ import Level from "./Level";
 const round1 = new Audio(require(`@/assets/sounds/Round1.ogg`));
 const round2 = new Audio(require(`@/assets/sounds/Round2.ogg`));
 const round3 = new Audio(require(`@/assets/sounds/Round3.ogg`));
+
 export default {
   name: "Question",
   components: {
@@ -60,7 +61,8 @@ export default {
       // vote()
       isVoting: false,
       // for fifty to rerender the button
-      componentKey: 0
+      componentKey: 0,
+      test: {}
     };
   },
   async created() {
@@ -78,6 +80,7 @@ export default {
       answers.push(correctAnswer);
       question.answers = _.shuffle(answers);
       this.displayQuestion();
+      this.recognition();
     });
   },
   mounted() {
@@ -88,6 +91,7 @@ export default {
     qIndex() {
       this.displayQuestion();
       this.whichRound();
+      this.read();
     },
     round() {
       this.bgm();
@@ -120,17 +124,20 @@ export default {
       }
     },
     playSound(sound) {
-      // sound should include
+      // file extension should include
       const path = require(`@/assets/sounds/${sound}`);
       const audio = new Audio(path);
       audio.play();
     },
     read() {
-      const speech = new SpeechSynthesisUtterance();
       speechSynthesis.cancel();
+      const speech = new SpeechSynthesisUtterance();
+      const voices = window.speechSynthesis.getVoices();
+      speech.voice = voices[0];
       speech.lang = "en-US";
       speech.text = this.currentQuestion.question;
-      speechSynthesis.speak(speech);
+      window.speechSynthesis.speak(speech);
+      this.test = speech;
     },
     displayQuestion() {
       this.currentQuestion = this.questions[this.qIndex];
@@ -146,6 +153,34 @@ export default {
         this.playSound("WrongAnswer.ogg");
         this.emitStart();
       }
+    },
+    recognition() {
+      window.SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new window.SpeechRecognition();
+      recognition.interimResults = false;
+      recognition.lang = "en-US";
+      recognition.addEventListener("result", e => {
+        let transcript = e.results[0][0].transcript;
+        switch (transcript) {
+          case "a final answer":
+            this.isAnswer("a");
+            break;
+          case "b final answer":
+            this.isAnswer("b");
+
+            break;
+          case "c final answer":
+            this.isAnswer("c");
+
+            break;
+          case "d final answer":
+            this.isAnswer("d");
+            break;
+        }
+        recognition.addEventListener("end", recognition.start);
+        recognition.start();
+      });
     },
     emitStart() {
       this.$emit("update:isStart", false);
