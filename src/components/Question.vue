@@ -101,6 +101,9 @@ export default {
     }
   },
   methods: {
+    // ---------------------------------BONUS 2
+    //
+    //
     // determine which bgm should be played
     bgm() {
       if (this.round === "round3") {
