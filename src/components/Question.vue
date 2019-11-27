@@ -80,7 +80,6 @@ export default {
       answers.push(correctAnswer);
       question.answers = _.shuffle(answers);
       this.displayQuestion();
-      this.recognition();
     });
   },
   mounted() {
